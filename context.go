@@ -11,20 +11,29 @@ type Context interface {
 }
 
 type Logger interface {
-	Info(msg string, args ...interface{})
-	Warn(msg string, args ...interface{})
-	Error(msg string, args ...interface{})
-	Debug(msg string, args ...interface{})
+	Infow(msg string, args ...interface{})
+	Warnw(msg string, args ...interface{})
+	Errorw(msg string, args ...interface{})
+	Debugw(msg string, args ...interface{})
+	Debug(args ...interface{})
+	Info(args ...interface{})
+	Warn(args ...interface{})
+	Error(args ...interface{})
+	Infof(format string, args ...interface{})
+	Warnf(format string, args ...interface{})
+	Errorf(format string, args ...interface{})
+	Debugf(format string, args ...interface{})
 }
-type childContext struct{
+type childContext struct {
 	context.Context
 }
-func (c *childContext)Log()Logger{
+
+func (c *childContext) Log() Logger {
 	return nil
 }
 
 func FromSysContext(ctx context.Context) Context {
-	return &childContext{Context:ctx}
+	return &childContext{Context: ctx}
 }
 
 type loggerContext struct {
@@ -51,6 +60,6 @@ func (*loggerContext) Value(key interface{}) interface{} {
 	return nil
 }
 
-func WithLogger(logger Logger,parent Context) Context {
-	return &loggerContext{Context:parent,log: logger}
+func WithLogger(logger Logger, parent Context) Context {
+	return &loggerContext{Context: parent, log: logger}
 }
