@@ -51,6 +51,6 @@ func (*loggerContext) Value(key interface{}) interface{} {
 	return nil
 }
 
-func WithLogger(logger Logger) Context {
-	return &loggerContext{log: logger}
+func WithLogger(logger Logger,parent Context) Context {
+	return &loggerContext{Context:parent,log: logger}
 }
