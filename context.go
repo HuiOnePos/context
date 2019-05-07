@@ -16,14 +16,20 @@ type Logger interface {
 	Error(msg string, args ...interface{})
 	Debug(msg string, args ...interface{})
 }
+
+func FromSysContext(ctx context.Context) Context {
+	return &loggerContext{Context:ctx}
+}
+
 type loggerContext struct {
+	context.Context
 	log Logger
 }
 
 func (c *loggerContext) Log() Logger {
 	return c.log
 }
-func (*loggerContext) Deadline() (deadline time.Time, ok bool) {
+func (c *loggerContext) Deadline() (deadline time.Time, ok bool) {
 	return
 }
 
