@@ -16,13 +16,19 @@ type Logger interface {
 	Error(msg string, args ...interface{})
 	Debug(msg string, args ...interface{})
 }
+type childContext struct{
+	context.Context
+}
+func (c *childContext)Log()Logger{
+	return nil
+}
 
 func FromSysContext(ctx context.Context) Context {
-	return &loggerContext{Context:ctx}
+	return &childContext{Context:ctx}
 }
 
 type loggerContext struct {
-	context.Context
+	Context
 	log Logger
 }
 
